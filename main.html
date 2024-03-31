@@ -37,10 +37,42 @@
 <script>
 //Your code goes here
 	// alert()
-	let ele=document.getElementsByClassName("item");
-	for(let x of ele){
-		x.setAttribute("draggable","true")
-	}
+	 let isDragging = false;
+  let initialX = 0;
+  let currentX = 0;
+
+  const items = document.querySelectorAll('.item');
+
+  items.forEach(item => {
+    item.addEventListener('mousedown', handleMouseDown);
+    item.addEventListener('mouseup', handleMouseUp);
+    item.addEventListener('mousemove', handleMouseMove);
+  });
+
+  function handleMouseDown(event) {
+    isDragging = true;
+    initialX = event.clientX;
+  }
+
+  function handleMouseUp() {
+    isDragging = false;
+  }
+
+  function handleMouseMove(event) {
+    if (!isDragging) return;
+    
+    currentX = event.clientX;
+    const deltaX = currentX - initialX;
+    const direction = deltaX > 0 ? 1 : -1;
+
+    items.forEach(item => {
+      const currentPosition = parseInt(item.classList[1].substring(4));
+      const newPosition = currentPosition + direction;
+      if (newPosition >= 1 && newPosition <= 25) {
+        item.style.order = newPosition;
+      }
+    });
+  }
 </script>
 
   </body>
